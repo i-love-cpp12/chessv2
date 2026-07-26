@@ -1,7 +1,7 @@
 #pragma once
 #include<cstdint>
 #include<vector>
-#include"../ChessboardPosition.hpp"
+#include"../ChessMove.hpp"
 
 namespace Chess
 {
@@ -10,8 +10,8 @@ namespace Chess
 
     enum PieceColor : uint8_t
     {
-        WHITE1,
-        BLACK1
+        CHESS_WHITE,
+        CHESS_BLACK
     };
 
     enum PieceType: uint8_t
@@ -27,17 +27,19 @@ namespace Chess
     class Piece
     {
         public:
-            Piece(const PieceColor color, const PieceType type, Board& board, const ChessboardPosition& position);
+            Piece(const PieceColor color, const PieceType type, const Board& board, const ChessboardPosition& position);
             virtual ~Piece() = default;
-            virtual std::vector<PieceMove> getPossbileMoves() const = 0;
+            virtual std::vector<ChessMove> possbileMoves() const = 0;
+            virtual void setPosition(const ChessboardPosition& dest);
+            ChessboardPosition getPosition() { return position; }
+            constexpr virtual char getPieceCharRepresentation() const = 0;
+            constexpr virtual bool hasMoved() const { return true; };
             
-        private:
-
         public:
             const PieceColor color;
             const PieceType type;
-        private:
-            Board& board;
+        protected:
+            const Board& board;
             ChessboardPosition position;
 
     };
