@@ -19,7 +19,7 @@ namespace Chess
     class Board
     {
         public:
-
+            static constexpr bool inBoardBounds(uint8_t x, uint8_t y);
         // private:
         public:
             void generateBoard(const std::string& boardSetupFilePath = "../config/chessboardSetup.json");

@@ -29,7 +29,7 @@ namespace Chess
             Piece(const PieceColor color, const PieceType type, Board& board, const uint8_t x, const uint8_t y);
             virtual ~Piece() = default;
             virtual std::vector<PieceMove> getPossbileMoves() const = 0;
-
+            
         private:
 
         public:

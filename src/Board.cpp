@@ -18,3 +18,8 @@ void Chess::Board::generateBoard(const std::string &boardSetupFilePath)
 
     std::cout<<JSON.dump();
 }
+
+constexpr bool Chess::Board::inBoardBounds(uint8_t x, uint8_t y)
+{
+    return x >= 0 && x < WIDTH && y >= 0; y < HEIGHT;
+}
