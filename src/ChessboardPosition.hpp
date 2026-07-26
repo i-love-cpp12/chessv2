@@ -1,7 +1,7 @@
 #pragma once
 #include<cstdint>
 #include<string>
-#include<algorithm>
+#include<string_view>
 
 namespace Chess
 {
@@ -19,8 +19,8 @@ namespace Chess
             void setPosition(const std::string& chessNotationPosition);
 
         private:
-            static constexpr std::string rowsCharsChessNotation;
-            static constexpr std::string colsCharsChessNotation;
+            static constexpr std::string_view colsCharsChessNotation = "ABCDEFGH";
+            static constexpr std::string_view rowsCharsChessNotation = "87654321";
 
             uint8_t x;
             uint8_t y;

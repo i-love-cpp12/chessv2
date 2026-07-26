@@ -1,6 +1,7 @@
 #pragma once
 #include<cstdint>
 #include<vector>
+#include"../ChessboardPosition.hpp"
 
 namespace Chess
 {
@@ -26,7 +27,7 @@ namespace Chess
     class Piece
     {
         public:
-            Piece(const PieceColor color, const PieceType type, Board& board, const uint8_t x, const uint8_t y);
+            Piece(const PieceColor color, const PieceType type, Board& board, const ChessboardPosition& position);
             virtual ~Piece() = default;
             virtual std::vector<PieceMove> getPossbileMoves() const = 0;
             
@@ -37,8 +38,7 @@ namespace Chess
             const PieceType type;
         private:
             Board& board;
-            uint8_t x;
-            uint8_t y;
+            ChessboardPosition position;
 
     };
 }

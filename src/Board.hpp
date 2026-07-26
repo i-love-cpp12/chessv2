@@ -5,21 +5,20 @@
 #include<memory>
 #include<string>
 #include"Pieces/Piece.hpp"
+#include"ChessboardPosition.hpp"
 
 namespace Chess
 {
     struct PieceMove
     {
-        uint8_t fromX;
-        uint8_t fromY;
-        uint8_t toX;
-        uint8_t toY;
+        ChessboardPosition from;
+        ChessboardPosition to;
     };
 
     class Board
     {
         public:
-            static constexpr bool inBoardBounds(uint8_t x, uint8_t y);
+            static bool inBoardBounds(uint8_t x, uint8_t y);
         // private:
         public:
             void generateBoard(const std::string& boardSetupFilePath = "../config/chessboardSetup.json");
