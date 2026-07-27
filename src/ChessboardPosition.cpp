@@ -3,13 +3,14 @@
 #include<stdexcept>
 #include<cctype>
 
-
-
-#include<iostream>
-
 Chess::ChessboardPosition::ChessboardPosition(uint8_t x, uint8_t y)
 {
     setPosition(x, y);
+}
+
+Chess::ChessboardPosition::ChessboardPosition(const UniversalVector<uint8_t> &pos)
+{
+    setPosition(pos);
 }
 
 Chess::ChessboardPosition::ChessboardPosition(const std::string &chessNotationPosition)
@@ -24,12 +25,16 @@ std::string Chess::ChessboardPosition::getChessNotationPosition()
 
 void Chess::ChessboardPosition::setPosition(uint8_t x, uint8_t y)
 {
-    // std::cout<<"x: "<<(int)x<<" y: "<<(int)y<<'\n';
     if(!Board::inBoardBounds(x, y))
         throw std::runtime_error("Position out of bound");
 
     this->x = x;
     this->y = y;
+}
+
+void Chess::ChessboardPosition::setPosition(const UniversalVector<uint8_t> &pos)
+{
+    setPosition(pos.x, pos.y);
 }
 
 void Chess::ChessboardPosition::setPosition(const std::string &chessNotationPosition)

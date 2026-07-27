@@ -20,9 +20,11 @@ namespace Chess
     {
         public:
             ChessMove(const ChessboardPosition& destination, const Piece& piece, const ChessMoveType moveType = ChessMoveType::NONE, const std::optional<PieceType>& capturedPieceType = std::nullopt);
-        private:
-            ChessboardPosition destination;
+        public:
+            const ChessboardPosition destination;
             const Piece& piece;
+            const ChessboardPosition& source;
+        private:
             ChessMoveType moveType;
             const std::optional<PieceType> capturedPieceType;
     };

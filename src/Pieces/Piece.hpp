@@ -29,9 +29,9 @@ namespace Chess
         public:
             Piece(const PieceColor color, const PieceType type, const Board& board, const ChessboardPosition& position);
             virtual ~Piece() = default;
-            virtual std::vector<ChessMove> possbileMoves() const = 0;
+            virtual std::vector<ChessMove> getPseudoPossibleMoves() const = 0;
             virtual void setPosition(const ChessboardPosition& dest);
-            ChessboardPosition getPosition() { return position; }
+            ChessboardPosition getPosition() const { return position; }
             constexpr virtual char getPieceCharRepresentation() const = 0;
             constexpr virtual bool hasMoved() const { return true; };
             

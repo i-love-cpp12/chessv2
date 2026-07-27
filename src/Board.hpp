@@ -7,25 +7,25 @@
 #include<optional>
 #include"Pieces/Piece.hpp"
 #include"ChessboardPosition.hpp"
+#include"UniversalVector.hpp"
 
 namespace Chess
 {
     class Board
     {
         public:
+            Board(const std::string& boardSetupFilePath = "../config/chessboardSetup.json");
             static bool inBoardBounds(uint8_t x, uint8_t y);
+            static bool inBoardBounds(const UniversalVector<uint8_t>& pos);
             const Piece* getPiece(uint8_t x, uint8_t y) const;
-            // bool isEnPassantPosition(uint8_t x, uint8_t y) const;
-
+            const Piece* getPiece(const UniversalVector<uint8_t>& pos) const;
+            void movePiece(ChessboardPosition from, ChessboardPosition to);
         private:
-            void generateBoard(const std::string& boardSetupFilePath = "../config/chessboardSetup.json");
-            Piece* getPieceRef(uint8_t x, uint8_t y) const;
-
+            void generateBoard(const std::string& boardSetupFilePath);
         public:
             static constexpr uint8_t WIDTH = 8;
             static constexpr uint8_t HEIGHT = 8;
         private:
             std::array<std::unique_ptr<Piece>, WIDTH * HEIGHT> data;
-            // std::optional<ChessboardPosition> enPassantPosition;
     };
 }

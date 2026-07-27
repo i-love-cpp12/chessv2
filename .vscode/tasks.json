@@ -7,6 +7,7 @@
             "args": [
                 "${workspaceFolder}/src/main.cpp",
                 "${workspaceFolder}/src/Board.cpp",
+                "${workspaceFolder}/src/ChessMove.cpp",
                 "${workspaceFolder}/src/ChessboardPosition.cpp",
                 "${workspaceFolder}/src/Pieces/Piece.cpp",
                 "-fdiagnostics-color=always",

@@ -2,6 +2,7 @@
 #include<cstdint>
 #include<string>
 #include<string_view>
+#include"UniversalVector.hpp"
 
 namespace Chess
 {
@@ -9,6 +10,7 @@ namespace Chess
     {
         public:
             ChessboardPosition(uint8_t x, uint8_t y);
+            ChessboardPosition(const UniversalVector<uint8_t>& pos);
             ChessboardPosition(const std::string& chessNotationPosition);
 
             uint8_t getX() const {return x;}
@@ -16,6 +18,7 @@ namespace Chess
             std::string getChessNotationPosition();
 
             void setPosition(uint8_t x, uint8_t y);
+            void setPosition(const UniversalVector<uint8_t>& pos);
             void setPosition(const std::string& chessNotationPosition);
 
         private:
