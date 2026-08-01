@@ -1,97 +1,144 @@
-{
-    "board":
+[
     {
-        "x": 0,
-        "y": 0,
-        "width": 8,
-        "height": 8
+        "name": "board",
+        "rect":
+        {
+            "x": 0,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        }
     },
 
-
-    "white_king":
     {
-        "x": 0,
-        "y": 8,
-        "width": 1,
-        "height": 1
-    },
-    "white_queen":
-    {
-        "x": 1,
-        "y": 8,
-        "width": 1,
-        "height": 1
-    },
-    "white_rook":
-    {
-        "x": 2,
-        "y": 8,
-        "width": 1,
-        "height": 1
-    },
-    "white_bishop":
-    {
-        "x": 3,
-        "y": 8,
-        "width": 1,
-        "height": 1
-    },
-    "white_knight":
-    {
-        "x": 4,
-        "y": 8,
-        "width": 1,
-        "height": 1
-    },
-    "white_pown":
-    {
-        "x": 5,
-        "y": 8,
-        "width": 1,
-        "height": 1
+        "name": "white_king",
+        "rect":
+        {
+            "x": 0,
+            "y": 8,
+            "width": 1,
+            "height": 1
+        }
     },
 
+    {
+        "name": "white_queen",
+        "rect":
+        {
+            "x": 1,
+            "y": 8,
+            "width": 1,
+            "height": 1
+        }
+    },
 
-    "black_king":
     {
-        "x": 0,
-        "y": 9,
-        "width": 1,
-        "height": 1
+        "name": "white_rook",
+        "rect":
+        {
+            "x": 2,
+            "y": 8,
+            "width": 1,
+            "height": 1
+        }
     },
-    "black_queen":
+
     {
-        "x": 1,
-        "y": 9,
-        "width": 1,
-        "height": 1
+        "name": "white_bishop",
+        "rect":
+        {
+            "x": 3,
+            "y": 8,
+            "width": 1,
+            "height": 1
+        }
     },
-    "black_rook":
+
     {
-        "x": 2,
-        "y": 9,
-        "width": 1,
-        "height": 1
+        "name": "white_knight",
+        "rect":
+        {
+            "x": 4,
+            "y": 8,
+            "width": 1,
+            "height": 1
+        }
     },
-    "black_bishop":
+
     {
-        "x": 3,
-        "y": 9,
-        "width": 1,
-        "height": 1
+        "name": "white_pawn",
+        "rect":
+        {
+            "x": 5,
+            "y": 8,
+            "width": 1,
+            "height": 1
+        }
     },
-    "black_knight":
+
     {
-        "x": 4,
-        "y": 9,
-        "width": 1,
-        "height": 1
+        "name": "black_king",
+        "rect":
+        {
+            "x": 0,
+            "y": 9,
+            "width": 1,
+            "height": 1
+        }
     },
-    "black_pown":
+
     {
-        "x": 5,
-        "y": 9,
-        "width": 1,
-        "height": 1
+        "name": "black_queen",
+        "rect":
+        {
+            "x": 1,
+            "y": 9,
+            "width": 1,
+            "height": 1
+        }
+    },
+
+    {
+        "name": "black_rook",
+        "rect":
+        {
+            "x": 2,
+            "y": 9,
+            "width": 1,
+            "height": 1
+        }
+    },
+
+    {
+        "name": "black_bishop",
+        "rect":
+        {
+            "x": 3,
+            "y": 9,
+            "width": 1,
+            "height": 1
+        }
+    },
+
+    {
+        "name": "black_knight",
+        "rect":
+        {
+            "x": 4,
+            "y": 9,
+            "width": 1,
+            "height": 1
+        }
+    },
+
+    {
+        "name": "black_pawn",
+        "rect":
+        {
+            "x": 5,
+            "y": 9,
+            "width": 1,
+            "height": 1
+        }
     }
-}
+]

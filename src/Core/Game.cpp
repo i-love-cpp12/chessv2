@@ -1,5 +1,10 @@
 #include "Game.hpp"
 
+
+Chess::Game::Game()
+{
+}
+
 void Chess::Game::makeMove(const ChessMove &move)
 {
     board.movePiece(move.source, move.destination);

@@ -17,7 +17,7 @@ namespace Chess
     enum PieceType: uint8_t
     {
         KING,
-        QWEEN,
+        QUEEN,
         ROOK,
         BISHOP,
         KNIGHT,
