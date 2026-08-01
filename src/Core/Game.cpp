@@ -1,7 +1,10 @@
 #include "Game.hpp"
 
 
-Chess::Game::Game()
+Chess::Game::Game(): posibleMoves({
+    Chess::ChessMove(Chess::ChessboardPosition(0, 0), *board.getPiece(0, 1)),
+    Chess::ChessMove(Chess::ChessboardPosition(0, 1), *board.getPiece(0, 1), Chess::ChessMoveType::CAPTURE)}
+)
 {
 }
 

@@ -32,8 +32,7 @@ namespace Chess
             const ChessboardPosition destination;
             const Piece& piece;
             const ChessboardPosition& source;
-        private:
-            ChessMoveType moveType;
+            const ChessMoveType moveType;
             const std::optional<PieceType> capturedPieceType;
     };
 }

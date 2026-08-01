@@ -4,6 +4,7 @@
 #include"../Core/Board.hpp"
 #include"TextureManager.hpp"
 #include"../Core/Pieces/Piece.hpp"
+#include"../Core/ChessMove.hpp"
 #include<map>
 #include<tuple>
 
@@ -28,6 +29,7 @@ namespace Chess
         private:
             void renderBoard(const Chess::Board& board) const;
             void renderPiece(const Piece* const piece) const;
+            void renderSuggestedMoves(const std::vector<Chess::ChessMove>& posibleMoves) const;
             Rectangle getPieceSprite(const PieceColor& color, const PieceType& type) const;
         private:
             Chess::TextureManager textureManager;

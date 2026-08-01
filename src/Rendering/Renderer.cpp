@@ -27,6 +27,7 @@ Chess::Renderer::Renderer(const std::string& texturePath, const std::string& JSO
 void Chess::Renderer::renderGame(const Chess::Game &game) const
 {
     renderBoard(game.getBoard());
+    renderSuggestedMoves(game.getPossibleMoves());
 }
 
 void Chess::Renderer::renderBoard(const Chess::Board &board) const
@@ -47,8 +48,29 @@ void Chess::Renderer::renderPiece(const Piece *const piece) const
     if(!piece)
         return;
     Rectangle sprite = getPieceSprite(piece->color, piece->type);
-    Rectangle dest = {piece->getPosition().getX() * CELL_SIZE, piece->getPosition().getY() * CELL_SIZE, CELL_SIZE, CELL_SIZE};
+    Rectangle dest =
+    {
+        piece->getPosition().getX() * (float)CELL_SIZE,
+        piece->getPosition().getY() * (float)CELL_SIZE,
+        (float)CELL_SIZE,
+        (float)CELL_SIZE
+    };
     DrawTexturePro(textureManager.getTexture(), sprite, dest, {0, 0}, 0.0f, WHITE);
+}
+
+void Chess::Renderer::renderSuggestedMoves(const std::vector<Chess::ChessMove>& posibleMoves) const
+{
+    for(const auto& move : posibleMoves)
+    {
+        Vector2 center = {move.destination.getX() * (float)CELL_SIZE + CELL_SIZE / 2.0f, move.destination.getY() * (float)CELL_SIZE + CELL_SIZE / 2.0f};
+        const int fullRadius = CELL_SIZE / 2;
+        Color color = {170, 170, 170, 220};
+
+        if(move.moveType & Chess::ChessMoveType::CAPTURE)
+            DrawRing(center, fullRadius * 0.8 , fullRadius * 0.9, 0.0f, 360.0f, 30, color);
+        else
+            DrawRing(center, 0.0f , fullRadius * 0.35, 0.0f, 360.0f, 30, color);
+    }
 }
 
 Rectangle Chess::Renderer::getPieceSprite(const PieceColor& color, const PieceType& type) const

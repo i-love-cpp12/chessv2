@@ -25,7 +25,7 @@ Chess::TextureManager::TextureManager(const std::string& texturePath, const std:
         throw std::runtime_error("Failed to load JSONCoordsFile");
 
     nlohmann::json JSON;
-    JSON << coordsFile;
+    coordsFile >> JSON;
 
     for(const auto& sprite : JSON)
     {
