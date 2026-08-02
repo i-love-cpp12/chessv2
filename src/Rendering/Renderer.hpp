@@ -27,10 +27,13 @@ namespace Chess
             Renderer(const std::string& texturePath, const std::string& JSONCoordsPath);
             void renderGame(const Chess::Game& game) const;
         private:
-            void renderBoard(const Chess::Board& board) const;
+            void renderBoard() const;
+            void renderPieces(const Chess::Board& board) const;
             void renderPiece(const Piece* const piece) const;
+            void renderSelectedSquare(const std::optional<ChessboardPosition>& selectedSquare) const;
             void renderSuggestedMoves(const std::vector<Chess::ChessMove>& posibleMoves) const;
             Rectangle getPieceSprite(const PieceColor& color, const PieceType& type) const;
+            Rectangle chessPositionToDisplayPos(const Chess::ChessboardPosition& position) const;
         private:
             Chess::TextureManager textureManager;
             static const std::map<SpritePieceKey, std::string> pieceTypeToSpriteKey;

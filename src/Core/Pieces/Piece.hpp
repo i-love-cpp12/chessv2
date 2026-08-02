@@ -2,6 +2,7 @@
 #include<cstdint>
 #include<vector>
 #include"../ChessboardPosition.hpp"
+#include<memory>
 
 namespace Chess
 {
@@ -28,7 +29,9 @@ namespace Chess
     {
         public:
             Piece(const PieceColor color, const PieceType type, const Board& board, const ChessboardPosition& position);
+            Piece(const Piece& other) = default;
             virtual ~Piece() = default;
+            virtual std::unique_ptr<Piece> clone() const = 0;
             virtual std::vector<Chess::ChessMove> getPseudoPossibleMoves() const = 0;
             virtual void setPosition(const ChessboardPosition& dest);
             ChessboardPosition getPosition() const { return position; }

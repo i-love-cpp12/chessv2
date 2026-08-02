@@ -13,6 +13,10 @@ int main()
 
     while(!WindowShouldClose())
     {
+        //temp
+        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            game.onSquereSelected(GetMouseX() / 100, GetMouseY() / 100);
+            
         BeginDrawing();
             ClearBackground(WHITE);
             renderer.renderGame(game);

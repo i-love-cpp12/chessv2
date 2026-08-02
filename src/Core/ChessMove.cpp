@@ -1,9 +1,8 @@
 #include "ChessMove.hpp"
 
-Chess::ChessMove::ChessMove(const ChessboardPosition& destination, const Piece& piece, const ChessMoveType moveType, const std::optional<PieceType>& capturedPieceType):
+Chess::ChessMove::ChessMove(const ChessboardPosition& source, const ChessboardPosition& destination, const ChessMoveType moveType, const std::optional<PieceType>& capturedPieceType):
+    source(source),
     destination(destination),
-    piece(piece),
-    source(piece.getPosition()),
     moveType(moveType),
     capturedPieceType(capturedPieceType)
 {

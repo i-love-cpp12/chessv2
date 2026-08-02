@@ -15,10 +15,16 @@ namespace Chess
     {
         public:
             Board(const std::string& boardSetupFilePath = "../config/chessboardSetup.json");
+            Board(const Board& other);
             static bool inBoardBounds(int8_t x, int8_t y);
             static bool inBoardBounds(const UniversalVector<int8_t>& pos);
+
             const Piece* getPiece(uint8_t x, uint8_t y) const;
             const Piece* getPiece(const UniversalVector<uint8_t>& pos) const;
+
+            const void removePiece(uint8_t x, uint8_t y);
+            const void removePiece(const UniversalVector<uint8_t>& pos);
+
             void movePiece(const ChessboardPosition& from, const ChessboardPosition& to);
         private:
             void generateBoard(const std::string& boardSetupFilePath);

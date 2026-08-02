@@ -4,12 +4,22 @@
 #include<stdexcept>
 #include<cctype>
 #include"Pieces/Pawn.hpp"
+#include"Pieces/King.hpp"
 
 
 #include<iostream>
 Chess::Board::Board(const std::string &boardSetupFilePath)
 {
     generateBoard(boardSetupFilePath);
+}
+
+Chess::Board::Board(const Board &other)
+{
+    for(size_t i = 0; i < data.size(); ++i)
+    {
+        if(other.data[i])
+            data[i] = other.data[i]->clone();
+    }
 }
 
 void Chess::Board::generateBoard(const std::string &boardSetupFilePath)
@@ -46,7 +56,7 @@ std::unique_ptr<Chess::Piece> Chess::Board::pieceFactory(char type, const Chessb
     switch(type)
     {
         case 'K':
-            return nullptr;
+            return std::make_unique<Chess::King>(color, *this, position);
 
         case 'Q':
             return nullptr;
@@ -89,9 +99,22 @@ const Chess::Piece* Chess::Board::getPiece(uint8_t x, uint8_t y) const
     return data[y * WIDTH + x].get();
 }
 
-const Chess::Piece *Chess::Board::getPiece(const UniversalVector<uint8_t>&  pos) const
+const Chess::Piece* Chess::Board::getPiece(const UniversalVector<uint8_t>&  pos) const
 {
     return getPiece(pos.x, pos.y);
+}
+
+const void Chess::Board::removePiece(uint8_t x, uint8_t y)
+{
+    if(!inBoardBounds(x, y))
+        throw std::runtime_error("Position out of bound");
+        
+    data[y * WIDTH + x].reset();
+}
+
+const void Chess::Board::removePiece(const UniversalVector<uint8_t> &pos)
+{
+    removePiece(pos.x, pos.y);
 }
 
 void Chess::Board::movePiece(const ChessboardPosition& from, const ChessboardPosition& to)

@@ -27,12 +27,11 @@ namespace Chess
     class ChessMove
     {
         public:
-            ChessMove(const ChessboardPosition& destination, const Piece& piece, const ChessMoveType moveType = ChessMoveType::NONE, const std::optional<PieceType>& capturedPieceType = std::nullopt);
+            ChessMove(const ChessboardPosition& source, const ChessboardPosition& destination, const ChessMoveType moveType = ChessMoveType::NONE, const std::optional<PieceType>& capturedPieceType = std::nullopt);
         public:
-            const ChessboardPosition destination;
-            const Piece& piece;
-            const ChessboardPosition& source;
-            const ChessMoveType moveType;
-            const std::optional<PieceType> capturedPieceType;
+            ChessboardPosition source;
+            ChessboardPosition destination;
+            ChessMoveType moveType;
+            std::optional<PieceType> capturedPieceType;
     };
 }

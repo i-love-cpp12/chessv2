@@ -18,6 +18,11 @@ Chess::ChessboardPosition::ChessboardPosition(const std::string &chessNotationPo
     setPosition(chessNotationPosition);
 }
 
+bool Chess::ChessboardPosition::operator==(const ChessboardPosition &other)
+{
+    return x == other.x && y == other.y;
+}
+
 std::string Chess::ChessboardPosition::getChessNotationPosition()
 {
     return std::string{colsCharsChessNotation[x], rowsCharsChessNotation[y]};

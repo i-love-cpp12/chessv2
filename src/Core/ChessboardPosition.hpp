@@ -13,8 +13,11 @@ namespace Chess
             ChessboardPosition(const UniversalVector<uint8_t>& pos);
             ChessboardPosition(const std::string& chessNotationPosition);
 
+            bool operator==(const ChessboardPosition& other);
+
             uint8_t getX() const {return x;}
             uint8_t getY() const {return y;}
+            UniversalVector<uint8_t> getUniversalVector(){ return {x, y}; }
             std::string getChessNotationPosition();
 
             void setPosition(uint8_t x, uint8_t y);

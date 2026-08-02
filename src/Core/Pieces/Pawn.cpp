@@ -8,6 +8,11 @@ Chess::Pawn::Pawn(const PieceColor color, const Board &board, const ChessboardPo
 {
 }
 
+std::unique_ptr<Chess::Piece> Chess::Pawn::clone() const
+{
+    return std::make_unique<Pawn>(*this);
+}
+
 std::vector<Chess::ChessMove> Chess::Pawn::getPseudoPossibleMoves() const
 {
     int8_t dir = color == PieceColor::CHESS_WHITE ? -1 : 1;
@@ -21,32 +26,34 @@ std::vector<Chess::ChessMove> Chess::Pawn::getPseudoPossibleMoves() const
     //forward
     if(board.inBoardBounds(x, y + dir) && !board.getPiece(forward))
     {
-        result.emplace_back(ChessboardPosition(forward), *this, (isPromoting(forward) ? ChessMoveType::PROMOTION : ChessMoveType::NONE));
+        result.emplace_back(position, ChessboardPosition(forward), (isPromoting(forward) ? ChessMoveType::PROMOTION : ChessMoveType::NONE));
         UniversalVector<uint8_t> doubleForward{x, (uint8_t)(y + dir * 2)};
         //double forward
         if(board.inBoardBounds(x, y + dir * 2) && !board.getPiece(doubleForward) && !hasMoved())
-            result.emplace_back(ChessboardPosition(doubleForward), *this, (isPromoting(doubleForward) ? ChessMoveType::PROMOTION : ChessMoveType::NONE));
+            result.emplace_back(position, ChessboardPosition(doubleForward), (isPromoting(doubleForward) ? ChessMoveType::PROMOTION : ChessMoveType::NONE));
     }
 
     UniversalVector<uint8_t> leftCapture{(uint8_t)(x - 1), (uint8_t)(y + dir)};
     //left capture
-    if(board.inBoardBounds(x - 1, y + dir) && board.getPiece(leftCapture))
+    if(board.inBoardBounds(x - 1, y + dir) && board.getPiece(leftCapture) && board.getPiece(leftCapture)->color != color)
     {
         result.emplace_back(
+            position,
             ChessboardPosition(leftCapture),
-            *this,
-            ChessMoveType::CAPTURE | (isPromoting(leftCapture) ? ChessMoveType::PROMOTION : ChessMoveType::NONE)
+            ChessMoveType::CAPTURE | (isPromoting(leftCapture) ? ChessMoveType::PROMOTION : ChessMoveType::NONE),
+            board.getPiece(leftCapture)->type
         );
     }
 
     UniversalVector<uint8_t> rightCapture{(uint8_t)(x + 1), (uint8_t)(y + dir)};
     //right capture
-    if(board.inBoardBounds(x + 1, y + dir) && board.getPiece(rightCapture))
+    if(board.inBoardBounds(x + 1, y + dir) && board.getPiece(rightCapture) && board.getPiece(rightCapture)->color != color)
     {
         result.emplace_back(
+            position,
             ChessboardPosition(rightCapture),
-            *this,
-            ChessMoveType::CAPTURE | (isPromoting(rightCapture) ? ChessMoveType::PROMOTION : ChessMoveType::NONE)
+            ChessMoveType::CAPTURE | (isPromoting(rightCapture) ? ChessMoveType::PROMOTION : ChessMoveType::NONE),
+            board.getPiece(rightCapture)->type
         );
     }
     return result;
