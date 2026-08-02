@@ -34,11 +34,11 @@ void Chess::Board::generateBoard(const std::string &boardSetupFilePath)
 
     if(!JSON.is_array() || JSON.size() != HEIGHT)
         throw std::runtime_error("Invalid format for board setup");
-    for(uint8_t y = 0; y < HEIGHT; ++y)
+    for(int8_t y = 0; y < HEIGHT; ++y)
     {
         if(!JSON[y].is_array() || JSON[y].size() != WIDTH)
             throw std::runtime_error("Invalid format for board setup");
-        for(uint8_t x = 0; x < WIDTH; ++x)
+        for(int8_t x = 0; x < WIDTH; ++x)
         {
             char piceChar = std::string(JSON[y][x])[0];
             std::cout<<piceChar<<", ";
@@ -91,7 +91,7 @@ bool Chess::Board::inBoardBounds(const UniversalVector<int8_t>& pos)
     return inBoardBounds(pos.x, pos.y);
 }
 
-const Chess::Piece* Chess::Board::getPiece(uint8_t x, uint8_t y) const
+const Chess::Piece* Chess::Board::getPiece(int8_t x, int8_t y) const
 {
     if(!inBoardBounds(x, y))
         throw std::runtime_error("Position out of bound");
@@ -99,12 +99,12 @@ const Chess::Piece* Chess::Board::getPiece(uint8_t x, uint8_t y) const
     return data[y * WIDTH + x].get();
 }
 
-const Chess::Piece* Chess::Board::getPiece(const UniversalVector<uint8_t>&  pos) const
+const Chess::Piece* Chess::Board::getPiece(const UniversalVector<int8_t>&  pos) const
 {
     return getPiece(pos.x, pos.y);
 }
 
-const void Chess::Board::removePiece(uint8_t x, uint8_t y)
+const void Chess::Board::removePiece(int8_t x, int8_t y)
 {
     if(!inBoardBounds(x, y))
         throw std::runtime_error("Position out of bound");
@@ -112,7 +112,7 @@ const void Chess::Board::removePiece(uint8_t x, uint8_t y)
     data[y * WIDTH + x].reset();
 }
 
-const void Chess::Board::removePiece(const UniversalVector<uint8_t> &pos)
+const void Chess::Board::removePiece(const UniversalVector<int8_t> &pos)
 {
     removePiece(pos.x, pos.y);
 }

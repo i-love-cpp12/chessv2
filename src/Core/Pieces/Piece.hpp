@@ -3,6 +3,8 @@
 #include<vector>
 #include"../ChessboardPosition.hpp"
 #include<memory>
+#include<span>
+#include"../UniversalVector.hpp"
 
 namespace Chess
 {
@@ -33,17 +35,45 @@ namespace Chess
             virtual ~Piece() = default;
             virtual std::unique_ptr<Piece> clone() const = 0;
             virtual std::vector<Chess::ChessMove> getPseudoPossibleMoves() const = 0;
-            virtual void setPosition(const ChessboardPosition& dest);
             ChessboardPosition getPosition() const { return position; }
             constexpr virtual char getPieceCharRepresentation() const = 0;
             constexpr virtual bool hasMoved() const { return true; };
-            
+        protected:
+            virtual void setPosition(const ChessboardPosition& dest);
+            std::vector<Chess::ChessMove> getMovesBasedOfDirs(const std::span<const UniversalVector<int8_t>> dirs) const;
+
         public:
             const PieceColor color;
             const PieceType type;
         protected:
+            static constexpr std::array<UniversalVector<int8_t>, 4> diagonalDirs = {
+                UniversalVector<int8_t>{-1, -1},
+                UniversalVector<int8_t>{1, -1},
+                UniversalVector<int8_t>{-1, 1},
+                UniversalVector<int8_t>{1, 1}
+            };
+
+            static constexpr std::array<UniversalVector<int8_t>, 4> straightDirs = {
+                UniversalVector<int8_t>{1, 0},
+                UniversalVector<int8_t>{-1, 0},
+                UniversalVector<int8_t>{0, -1},
+                UniversalVector<int8_t>{0, 1}
+            };
+
+            static constexpr std::array<UniversalVector<int8_t>, 8> combinedDirs{
+                UniversalVector<int8_t>{-1, -1},
+                UniversalVector<int8_t>{1, -1},
+                UniversalVector<int8_t>{-1, 1},
+                UniversalVector<int8_t>{1, 1},
+                UniversalVector<int8_t>{1, 0},
+                UniversalVector<int8_t>{-1, 0},
+                UniversalVector<int8_t>{0, -1},
+                UniversalVector<int8_t>{0, 1}
+            };
+
             const Board& board;
             ChessboardPosition position;
-
+        
+        friend Board;
     };
 }

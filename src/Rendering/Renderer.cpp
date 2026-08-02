@@ -40,9 +40,9 @@ void Chess::Renderer::renderBoard() const
 
 void Chess::Renderer::renderPieces(const Chess::Board &board) const
 {
-    for(uint8_t y = 0; y < board.HEIGHT; ++y)
+    for(int8_t y = 0; y < board.HEIGHT; ++y)
     {
-        for(uint8_t x = 0; x < board.WIDTH; ++x)
+        for(int8_t x = 0; x < board.WIDTH; ++x)
         {
             renderPiece(board.getPiece(x, y));
         }

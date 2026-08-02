@@ -14,10 +14,11 @@ namespace Chess
             Pawn(const PieceColor color, const Board& board, const ChessboardPosition& position);
             std::unique_ptr<Piece> clone() const override;
             std::vector<ChessMove> getPseudoPossibleMoves() const override;
-            void setPosition(const ChessboardPosition& dest) override;
             constexpr char getPieceCharRepresentation() const override { return '\0';}
             constexpr bool hasMoved() const override { return _hasMoved; }
             bool isPromoting(const ChessboardPosition& futurePosition) const;
+        protected:
+            void setPosition(const ChessboardPosition& dest) override;
         private:
             bool _hasMoved;
     };

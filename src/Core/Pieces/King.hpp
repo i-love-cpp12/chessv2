@@ -14,9 +14,10 @@ namespace Chess
             King(const PieceColor color, const Board& board, const ChessboardPosition& position);
             std::unique_ptr<Piece> clone() const override;
             std::vector<ChessMove> getPseudoPossibleMoves() const override;
-            void setPosition(const ChessboardPosition& dest) override;
-            constexpr char getPieceCharRepresentation() const override { return '\0';}
+            constexpr char getPieceCharRepresentation() const override { return 'K';}
             constexpr bool hasMoved() const override { return _hasMoved; }
+        protected:
+            void setPosition(const ChessboardPosition& dest) override;
         private:
             static constexpr std::array<UniversalVector<int8_t>, 8> offsets = {
                 UniversalVector<int8_t>{-1, -1},

@@ -15,6 +15,7 @@
                 "${workspaceFolder}/src/Core/Pieces/King.cpp",
                 "${workspaceFolder}/src/Rendering/Renderer.cpp",
                 "${workspaceFolder}/src/Rendering/TextureManager.cpp",
+                "-std=c++20",
                 "-fdiagnostics-color=always",
                 "-IC:/raylib/include",
                 "-LC:/raylib/lib",

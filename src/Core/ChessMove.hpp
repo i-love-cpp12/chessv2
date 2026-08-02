@@ -6,7 +6,7 @@
 
 namespace Chess
 {
-    enum ChessMoveType : uint8_t
+    enum ChessMoveType : int8_t
     {
         NONE = 0,
         CAPTURE = 1 << 0,
@@ -19,8 +19,8 @@ namespace Chess
     inline ChessMoveType operator|(ChessMoveType a, ChessMoveType b)
     {
         return static_cast<ChessMoveType>(
-            static_cast<uint8_t>(a) |
-            static_cast<uint8_t>(b)
+            static_cast<int8_t>(a) |
+            static_cast<int8_t>(b)
         );
     }
 

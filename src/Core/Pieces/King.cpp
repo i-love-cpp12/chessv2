@@ -15,14 +15,14 @@ std::unique_ptr<Chess::Piece> Chess::King::clone() const
 
 std::vector<Chess::ChessMove> Chess::King::getPseudoPossibleMoves() const
 {
-    uint8_t x = position.getX();
-    uint8_t y = position.getY();
+    int8_t x = position.getX();
+    int8_t y = position.getY();
     std::vector<ChessMove> result;
     result.reserve(8);
     for(const auto& dir : offsets)
     {
-        UniversalVector<uint8_t> targetPos = {(uint8_t)(x + dir.x), (uint8_t)(y + dir.y)};
-        if(!board.inBoardBounds(x + dir.x, y + dir.y))
+        UniversalVector<int8_t> targetPos = {(int8_t)(x + dir.x), (int8_t)(y + dir.y)};
+        if(!board.inBoardBounds(targetPos))
             continue;
         const Piece* targetPiece = board.getPiece(targetPos);
 

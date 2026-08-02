@@ -17,25 +17,25 @@ std::vector<Chess::ChessMove> Chess::Pawn::getPseudoPossibleMoves() const
 {
     int8_t dir = color == PieceColor::CHESS_WHITE ? -1 : 1;
 
-    uint8_t x = position.getX();
-    uint8_t y = position.getY();
+    int8_t x = position.getX();
+    int8_t y = position.getY();
     std::vector<ChessMove> result;
     result.reserve(4);
 
-    UniversalVector<uint8_t> forward{x, (uint8_t)(y + dir)};
+    UniversalVector<int8_t> forward{x, (int8_t)(y + dir)};
     //forward
-    if(board.inBoardBounds(x, y + dir) && !board.getPiece(forward))
+    if(board.inBoardBounds(forward) && !board.getPiece(forward))
     {
         result.emplace_back(position, ChessboardPosition(forward), (isPromoting(forward) ? ChessMoveType::PROMOTION : ChessMoveType::NONE));
-        UniversalVector<uint8_t> doubleForward{x, (uint8_t)(y + dir * 2)};
+        UniversalVector<int8_t> doubleForward{x, (int8_t)(y + dir * 2)};
         //double forward
-        if(board.inBoardBounds(x, y + dir * 2) && !board.getPiece(doubleForward) && !hasMoved())
+        if(board.inBoardBounds(doubleForward) && !board.getPiece(doubleForward) && !hasMoved())
             result.emplace_back(position, ChessboardPosition(doubleForward), (isPromoting(doubleForward) ? ChessMoveType::PROMOTION : ChessMoveType::NONE));
     }
 
-    UniversalVector<uint8_t> leftCapture{(uint8_t)(x - 1), (uint8_t)(y + dir)};
+    UniversalVector<int8_t> leftCapture{(int8_t)(x - 1), (int8_t)(y + dir)};
     //left capture
-    if(board.inBoardBounds(x - 1, y + dir) && board.getPiece(leftCapture) && board.getPiece(leftCapture)->color != color)
+    if(board.inBoardBounds(leftCapture) && board.getPiece(leftCapture) && board.getPiece(leftCapture)->color != color)
     {
         result.emplace_back(
             position,
@@ -45,9 +45,9 @@ std::vector<Chess::ChessMove> Chess::Pawn::getPseudoPossibleMoves() const
         );
     }
 
-    UniversalVector<uint8_t> rightCapture{(uint8_t)(x + 1), (uint8_t)(y + dir)};
+    UniversalVector<int8_t> rightCapture{(int8_t)(x + 1), (int8_t)(y + dir)};
     //right capture
-    if(board.inBoardBounds(x + 1, y + dir) && board.getPiece(rightCapture) && board.getPiece(rightCapture)->color != color)
+    if(board.inBoardBounds(rightCapture) && board.getPiece(rightCapture) && board.getPiece(rightCapture)->color != color)
     {
         result.emplace_back(
             position,

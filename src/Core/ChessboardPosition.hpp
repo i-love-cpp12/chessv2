@@ -9,26 +9,26 @@ namespace Chess
     class ChessboardPosition
     {
         public:
-            ChessboardPosition(uint8_t x, uint8_t y);
-            ChessboardPosition(const UniversalVector<uint8_t>& pos);
+            ChessboardPosition(int8_t x, int8_t y);
+            ChessboardPosition(const UniversalVector<int8_t>& pos);
             ChessboardPosition(const std::string& chessNotationPosition);
 
-            bool operator==(const ChessboardPosition& other);
+            bool operator==(const ChessboardPosition& other) const;
 
-            uint8_t getX() const {return x;}
-            uint8_t getY() const {return y;}
-            UniversalVector<uint8_t> getUniversalVector(){ return {x, y}; }
+            int8_t getX() const {return x;}
+            int8_t getY() const {return y;}
+            UniversalVector<int8_t> getUniversalVector(){ return {x, y}; }
             std::string getChessNotationPosition();
 
-            void setPosition(uint8_t x, uint8_t y);
-            void setPosition(const UniversalVector<uint8_t>& pos);
+            void setPosition(int8_t x, int8_t y);
+            void setPosition(const UniversalVector<int8_t>& pos);
             void setPosition(const std::string& chessNotationPosition);
 
         private:
             static constexpr std::string_view colsCharsChessNotation = "ABCDEFGH";
             static constexpr std::string_view rowsCharsChessNotation = "87654321";
 
-            uint8_t x;
-            uint8_t y;
+            int8_t x;
+            int8_t y;
     };
 }

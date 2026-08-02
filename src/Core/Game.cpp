@@ -9,7 +9,7 @@ Chess::Game::Game()/*: posibleMoves({
 {
 }
 
-void Chess::Game::onSquereSelected(uint8_t x, uint8_t y)
+void Chess::Game::onSquereSelected(int8_t x, int8_t y)
 {
     if(!board.inBoardBounds(x, y))
         return;
@@ -72,12 +72,12 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const Piece *piec
     return possibleMoves;
 }
 
-std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(uint8_t x, uint8_t y) const
+std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(int8_t x, int8_t y) const
 {
     return getPossibleMovesFor(board.getPiece(x, y));
 }
 
-std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const UniversalVector<uint8_t>& position) const
+std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const UniversalVector<int8_t>& position) const
 {
     return getPossibleMovesFor(board.getPiece(position.x, position.y));
 }
@@ -97,7 +97,7 @@ bool Chess::Game::isCheckmate(const PieceColor &colorInCheckmate, const std::opt
     return false;
 }
 
-bool Chess::Game::isEnPassantPosition(uint8_t x, uint8_t y) const
+bool Chess::Game::isEnPassantPosition(int8_t x, int8_t y) const
 {
     return enPassantPosition && enPassantPosition->getX() == x && enPassantPosition->getY() == y;
 }
