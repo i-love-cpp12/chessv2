@@ -30,7 +30,7 @@ std::vector<Chess::ChessMove> Chess::Pawn::getPseudoPossibleMoves() const
         UniversalVector<int8_t> doubleForward{x, (int8_t)(y + dir * 2)};
         //double forward
         if(board.inBoardBounds(doubleForward) && !board.getPiece(doubleForward) && !hasMoved())
-            result.emplace_back(position, ChessboardPosition(doubleForward), (isPromoting(doubleForward) ? ChessMoveType::PROMOTION : ChessMoveType::NONE));
+            result.emplace_back(position, ChessboardPosition(doubleForward), ChessMoveType::DOUBLE_FORWARD);
     }
 
     UniversalVector<int8_t> leftCapture{(int8_t)(x - 1), (int8_t)(y + dir)};

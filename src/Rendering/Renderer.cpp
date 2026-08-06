@@ -26,11 +26,11 @@ Chess::Renderer::Renderer(const std::string& texturePath, const std::string& JSO
 
 void Chess::Renderer::renderGame(const Chess::Game &game) const
 {
-    std::optional<Chess::ChessboardPosition> selectedSquare = game.getSelectedSquere();
+    std::optional<Chess::ChessboardPosition> selectedPieceSquare = game.getSelectedSquere();
     renderBoard();
-    renderSelectedSquare(selectedSquare);
+    renderSelectedSquare(selectedPieceSquare);
     renderPieces(game.getBoard());
-    renderSuggestedMoves(selectedSquare ? game.getPossibleMovesFor(selectedSquare->getX(), selectedSquare->getY()) : std::vector<Chess::ChessMove>{});
+    renderSuggestedMoves(selectedPieceSquare ? game.getPossibleMovesFor(selectedPieceSquare.value()) : std::vector<Chess::ChessMove>{});
 }
 
 void Chess::Renderer::renderBoard() const
@@ -58,10 +58,10 @@ void Chess::Renderer::renderPiece(const Piece *const piece) const
     DrawTexturePro(textureManager.getTexture(), sprite, dest, {0, 0}, 0.0f, WHITE);
 }
 
-void Chess::Renderer::renderSelectedSquare(const std::optional<ChessboardPosition> &selectedSquare) const
+void Chess::Renderer::renderSelectedSquare(const std::optional<ChessboardPosition> &selectedPieceSquare) const
 {
-    if(selectedSquare)
-        DrawRectangleRec(chessPositionToDisplayPos(selectedSquare.value()), Color{118, 161, 18, 150});
+    if(selectedPieceSquare)
+        DrawRectangleRec(chessPositionToDisplayPos(selectedPieceSquare.value()), Color{118, 161, 18, 150});
 }
 
 void Chess::Renderer::renderSuggestedMoves(const std::vector<Chess::ChessMove>& posibleMoves) const

@@ -23,7 +23,7 @@ bool Chess::ChessboardPosition::operator==(const ChessboardPosition &other) cons
     return x == other.x && y == other.y;
 }
 
-std::string Chess::ChessboardPosition::getChessNotationPosition()
+std::string Chess::ChessboardPosition::getChessNotationPosition() const
 {
     return std::string{colsCharsChessNotation[x], rowsCharsChessNotation[y]};
 }

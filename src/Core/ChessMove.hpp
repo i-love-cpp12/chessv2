@@ -12,8 +12,9 @@ namespace Chess
         CAPTURE = 1 << 0,
         PROMOTION = 1 << 1,
         EN_PASSANT = 1 << 2,
-        LONG_CASTLE = 1 << 3,
-        SHORT_CASTLE = 1 << 4
+        DOUBLE_FORWARD = 1 << 3,
+        LONG_CASTLE = 1 << 4,
+        SHORT_CASTLE = 1 << 5
     };
 
     inline ChessMoveType operator|(ChessMoveType a, ChessMoveType b)

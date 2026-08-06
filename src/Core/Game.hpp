@@ -19,15 +19,15 @@ namespace Chess
 
             //get filtered pseudo moves
             std::vector<ChessMove> getPossibleMovesFor(const Piece* piece) const;
-            std::vector<ChessMove> getPossibleMovesFor(int8_t x, int8_t y) const;
-            std::vector<ChessMove> getPossibleMovesFor(const UniversalVector<int8_t>& position) const;
             std::vector<ChessMove> getPossibleMovesFor(const ChessboardPosition& position) const;
 
         private:
             void makeMove(const ChessMove& move);
+            bool isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const std::optional<Board>& board) const;
             bool isCheck(const PieceColor& colorInCheck, const std::optional<Board>& board) const;
             bool isCheckmate(const PieceColor& colorInCheckmate, const std::optional<Board>& board) const;
-            bool isEnPassantPosition(int8_t x, int8_t y) const;
+            bool isEnPassantPosition(const UniversalVector<int8_t>& position) const;
+            std::vector<ChessMove> addPossibleMovesEnPassant(const Piece* piece, std::vector<ChessMove>& possibleMoves) const;
         public:
 
         private:
@@ -35,6 +35,8 @@ namespace Chess
             // std::vector<ChessMove> posibleMoves;
             std::optional<ChessboardPosition> enPassantPosition;
             std::optional<ChessboardPosition> selectedPieceSquere;
+            const Piece* whiteKing;
+            const Piece* blackKing;
             PieceColor turn;
     };
 }
