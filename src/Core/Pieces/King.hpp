@@ -16,9 +16,8 @@ namespace Chess
             std::vector<ChessMove> getPseudoPossibleMoves() const override;
             constexpr char getPieceCharRepresentation() const override { return 'K';}
             constexpr bool hasMoved() const override { return _hasMoved; }
-        protected:
-            void setPosition(const ChessboardPosition& dest) override;
         private:
+            void setPosition(const ChessboardPosition& dest) override;
             static constexpr std::array<UniversalVector<int8_t>, 8> offsets = {
                 UniversalVector<int8_t>{-1, -1},
                 UniversalVector<int8_t>{0, -1},

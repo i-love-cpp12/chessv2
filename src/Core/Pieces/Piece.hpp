@@ -41,6 +41,7 @@ namespace Chess
         protected:
             virtual void setPosition(const ChessboardPosition& dest);
             std::vector<Chess::ChessMove> getMovesBasedOfDirs(const std::span<const UniversalVector<int8_t>> dirs) const;
+            std::vector<Chess::ChessMove> getMovesBasedOfOffsets(const std::span<const UniversalVector<int8_t>> offsets) const;
 
         public:
             const PieceColor color;

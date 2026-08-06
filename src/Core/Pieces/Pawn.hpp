@@ -17,9 +17,8 @@ namespace Chess
             constexpr char getPieceCharRepresentation() const override { return '\0';}
             constexpr bool hasMoved() const override { return _hasMoved; }
             bool isPromoting(const ChessboardPosition& futurePosition) const;
-        protected:
-            void setPosition(const ChessboardPosition& dest) override;
         private:
+            void setPosition(const ChessboardPosition& dest) override;
             bool _hasMoved;
     };
 }

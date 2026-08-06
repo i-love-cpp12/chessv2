@@ -5,6 +5,10 @@
 #include<cctype>
 #include"Pieces/Pawn.hpp"
 #include"Pieces/King.hpp"
+#include"Pieces/Queen.hpp"
+#include"Pieces/Rook.hpp"
+#include"Pieces/Bishop.hpp"
+#include"Pieces/Knight.hpp"
 
 
 #include<iostream>
@@ -59,16 +63,16 @@ std::unique_ptr<Chess::Piece> Chess::Board::pieceFactory(char type, const Chessb
             return std::make_unique<Chess::King>(color, *this, position);
 
         case 'Q':
-            return nullptr;
+            return std::make_unique<Chess::Queen>(color, *this, position);
 
         case 'R':
-            return nullptr;
+            return std::make_unique<Chess::Rook>(color, *this, position);
 
         case 'B':
-            return nullptr;
+            return std::make_unique<Chess::Bishop>(color, *this, position);
 
         case 'N':
-            return nullptr;
+            return std::make_unique<Chess::Knight>(color, *this, position);
 
         case 'P':
             return std::make_unique<Pawn>(color, *this, position);
