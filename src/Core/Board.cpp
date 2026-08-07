@@ -22,8 +22,10 @@ Chess::Board::Board(const Board &other)
     for(size_t i = 0; i < data.size(); ++i)
     {
         if(other.data[i])
-            data[i] = other.data[i]->clone();
+            data[i] = other.data[i]->clone(this);
     }
+    whiteKing = getPiece(other.whiteKing->getPosition());
+    blackKing = getPiece(other.blackKing->getPosition());
 }
 
 void Chess::Board::generateBoard(const std::string &boardSetupFilePath)
@@ -47,6 +49,15 @@ void Chess::Board::generateBoard(const std::string &boardSetupFilePath)
             char piceChar = std::string(JSON[y][x])[0];
             std::cout<<piceChar<<", ";
             data[y * HEIGHT + x] = std::move(pieceFactory(piceChar, ChessboardPosition(x, y)));
+
+            const Piece* curr = data[y * HEIGHT + x].get();
+            if(curr && curr->type == PieceType::KING)
+            {
+                if(curr->color == PieceColor::CHESS_WHITE)
+                    whiteKing = curr;
+                else
+                    blackKing = curr;
+            }
         }
     }
 }
@@ -60,22 +71,22 @@ std::unique_ptr<Chess::Piece> Chess::Board::pieceFactory(char type, const Chessb
     switch(type)
     {
         case 'K':
-            return std::make_unique<Chess::King>(color, *this, position);
+            return std::make_unique<Chess::King>(color, this, position);
 
         case 'Q':
-            return std::make_unique<Chess::Queen>(color, *this, position);
+            return std::make_unique<Chess::Queen>(color, this, position);
 
         case 'R':
-            return std::make_unique<Chess::Rook>(color, *this, position);
+            return std::make_unique<Chess::Rook>(color, this, position);
 
         case 'B':
-            return std::make_unique<Chess::Bishop>(color, *this, position);
+            return std::make_unique<Chess::Bishop>(color, this, position);
 
         case 'N':
-            return std::make_unique<Chess::Knight>(color, *this, position);
+            return std::make_unique<Chess::Knight>(color, this, position);
 
         case 'P':
-            return std::make_unique<Pawn>(color, *this, position);
+            return std::make_unique<Pawn>(color, this, position);
 
         case ' ':
             return nullptr;
@@ -106,6 +117,16 @@ const Chess::Piece* Chess::Board::getPiece(int8_t x, int8_t y) const
 const Chess::Piece* Chess::Board::getPiece(const UniversalVector<int8_t>&  pos) const
 {
     return getPiece(pos.x, pos.y);
+}
+
+const Chess::Piece *Chess::Board::getPiece(const ChessboardPosition &pos) const
+{
+    return getPiece(pos.getX(), pos.getY());
+}
+
+const Chess::Piece& Chess::Board::getKing(const PieceColor color) const
+{
+    return *(color == PieceColor::CHESS_WHITE ? whiteKing : blackKing);
 }
 
 const void Chess::Board::removePiece(int8_t x, int8_t y)

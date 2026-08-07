@@ -1,16 +1,24 @@
 #include "Piece.hpp"
 #include "../Board.hpp"
 #include "../ChessMove.hpp"
+#include <stdexcept>
 
-Chess::Piece::Piece(const PieceColor color, const PieceType type, const Board& board, const ChessboardPosition& position):
+Chess::Piece::Piece(const PieceColor color, const PieceType type, const Board* board, const ChessboardPosition& position):
     color(color),
     type(type),
-    board(board),
     position(position)
 {
+    bindBoard(board);
 }
 
-void Chess::Piece::setPosition(const ChessboardPosition& dest)
+void Chess::Piece::bindBoard(const Board *newBoard)
+{
+    if(!newBoard)
+        throw std::runtime_error("board must not be nullptr");
+    board = newBoard;
+}
+
+void Chess::Piece::setPosition(const ChessboardPosition &dest)
 {
     position = dest;
 }
@@ -23,9 +31,9 @@ std::vector<Chess::ChessMove> Chess::Piece::getMovesBasedOfDirs(const std::span<
     {
         UniversalVector<int8_t> currPosition = {(int8_t)(position.getX() + dir.x), (int8_t)(position.getY() + dir.y)};
 
-        while(board.inBoardBounds(currPosition))
+        while(board->inBoardBounds(currPosition))
         {
-            const Piece* targetPiece = board.getPiece(currPosition);
+            const Piece* targetPiece = board->getPiece(currPosition);
 
             if(targetPiece)
             {
@@ -54,9 +62,9 @@ std::vector<Chess::ChessMove> Chess::Piece::getMovesBasedOfOffsets(const std::sp
     for(const auto& dir : offsets)
     {
         UniversalVector<int8_t> targetPos = {(int8_t)(x + dir.x), (int8_t)(y + dir.y)};
-        if(!board.inBoardBounds(targetPos))
+        if(!board->inBoardBounds(targetPos))
             continue;
-        const Piece* targetPiece = board.getPiece(targetPos);
+        const Piece* targetPiece = board->getPiece(targetPos);
 
         Chess::ChessMoveType moveType = Chess::ChessMoveType::NONE;
         std::optional<Chess::PieceType> capturedPieceType = std::nullopt;

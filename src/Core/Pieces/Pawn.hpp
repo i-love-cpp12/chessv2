@@ -11,8 +11,8 @@ namespace Chess
     class Pawn : public Piece
     {
         public:
-            Pawn(const PieceColor color, const Board& board, const ChessboardPosition& position);
-            std::unique_ptr<Piece> clone() const override;
+            Pawn(const PieceColor color, const Board* board, const ChessboardPosition& position);
+            std::unique_ptr<Piece> clone(const Board* newBoard = nullptr) const override;
             std::vector<ChessMove> getPseudoPossibleMoves() const override;
             constexpr char getPieceCharRepresentation() const override { return '\0';}
             constexpr bool hasMoved() const override { return _hasMoved; }

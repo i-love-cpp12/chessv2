@@ -23,9 +23,9 @@ namespace Chess
 
         private:
             void makeMove(const ChessMove& move);
-            bool isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const std::optional<Board>& board) const;
-            bool isCheck(const PieceColor& colorInCheck, const std::optional<Board>& board) const;
-            bool isCheckmate(const PieceColor& colorInCheckmate, const std::optional<Board>& board) const;
+            bool isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const Board& board) const;
+            bool isCheck(const PieceColor& colorInCheck, const Board& board) const;
+            bool isCheckmate(const PieceColor& colorInCheckmate, const Board& board) const;
             bool isEnPassantPosition(const UniversalVector<int8_t>& position) const;
             std::vector<ChessMove> addPossibleMovesEnPassant(const Piece* piece, std::vector<ChessMove>& possibleMoves) const;
         public:
@@ -35,8 +35,6 @@ namespace Chess
             // std::vector<ChessMove> posibleMoves;
             std::optional<ChessboardPosition> enPassantPosition;
             std::optional<ChessboardPosition> selectedPieceSquere;
-            const Piece* whiteKing;
-            const Piece* blackKing;
             PieceColor turn;
     };
 }

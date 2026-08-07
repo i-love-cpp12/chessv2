@@ -30,14 +30,15 @@ namespace Chess
     class Piece
     {
         public:
-            Piece(const PieceColor color, const PieceType type, const Board& board, const ChessboardPosition& position);
+            Piece(const PieceColor color, const PieceType type, const Board* board, const ChessboardPosition& position);
             Piece(const Piece& other) = default;
             virtual ~Piece() = default;
-            virtual std::unique_ptr<Piece> clone() const = 0;
+            virtual std::unique_ptr<Piece> clone(const Board* newBoard = nullptr) const = 0;
             virtual std::vector<Chess::ChessMove> getPseudoPossibleMoves() const = 0;
             ChessboardPosition getPosition() const { return position; }
             constexpr virtual char getPieceCharRepresentation() const = 0;
             constexpr virtual bool hasMoved() const { return true; };
+            void bindBoard(const Board* newBoard);
         protected:
             virtual void setPosition(const ChessboardPosition& dest);
             std::vector<Chess::ChessMove> getMovesBasedOfDirs(const std::span<const UniversalVector<int8_t>> dirs) const;
@@ -72,7 +73,7 @@ namespace Chess
                 UniversalVector<int8_t>{0, 1}
             };
 
-            const Board& board;
+            const Board* board;
             ChessboardPosition position;
         
         friend Board;

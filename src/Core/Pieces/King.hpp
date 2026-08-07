@@ -11,8 +11,8 @@ namespace Chess
     class King : public Piece
     {
         public:
-            King(const PieceColor color, const Board& board, const ChessboardPosition& position);
-            std::unique_ptr<Piece> clone() const override;
+            King(const PieceColor color, const Board* board, const ChessboardPosition& position);
+            std::unique_ptr<Piece> clone(const Board* newBoard = nullptr) const override;
             std::vector<ChessMove> getPseudoPossibleMoves() const override;
             constexpr char getPieceCharRepresentation() const override { return 'K';}
             constexpr bool hasMoved() const override { return _hasMoved; }

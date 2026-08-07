@@ -7,24 +7,7 @@ Chess::Game::Game()/*: posibleMoves({
 )*/
 // :selectedPieceSquere(std::optional<Chess::ChessboardPosition>(Chess::ChessboardPosition(1, 1)))
 {
-    for(int8_t y = 0; y < board.HEIGHT; ++y)
-    {
-        for(int8_t x = 0; x < board.WIDTH; ++x)
-        {
-            const Piece* const piece = board.getPiece(x, y);
-
-            if(!piece->type == PieceType::KING)
-                continue;
-
-            if(piece->color == PieceColor::CHESS_WHITE)
-                whiteKing = piece;
-            else
-                blackKing = piece;
-
-            if(whiteKing && blackKing)
-                return;
-        }
-    }
+    
 }
 
 void Chess::Game::onSquereSelected(int8_t x, int8_t y)
@@ -82,7 +65,7 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const Piece *piec
 
     for(size_t i = 0; i < possibleMoves.size(); ++i)
     {
-        Chess::ChessMove move = possibleMoves[i];
+        const Chess::ChessMove& move = possibleMoves[i];
         Board boardCopy = board;
         
         boardCopy.movePiece(move.source, move.destination);
@@ -103,18 +86,33 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const ChessboardP
     return getPossibleMovesFor(board.getPiece(position.getX(), position.getY()));
 }
 
-bool Chess::Game::isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const std::optional<Board>& board) const
+bool Chess::Game::isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const Board& board) const
 {
+    //no deep copy on board in piece class use ptr and setboard or smth
+    for(int8_t y = 0; y < board.HEIGHT; ++y)
+    {
+        for(int8_t x = 0; x < board.WIDTH; ++x)
+        {
+            const Piece* const piece = board.getPiece(x, y);
+            if(!piece || piece->color == colorUnderAttack)
+                continue;
+            for(const auto& move : piece->getPseudoPossibleMoves())
+            {
+                if(move.destination == square)
+                    return true;
+            }
+        }
+    }
     return false;
 }
 
-bool Chess::Game::isCheck(const PieceColor &colorInCheck, const std::optional<Board> &board) const
+bool Chess::Game::isCheck(const PieceColor &colorInCheck, const Board& board) const
 {
-    ChessboardPosition kingPos = PieceColor::CHESS_WHITE ? whiteKing->getPosition() : blackKing->getPosition();
+    ChessboardPosition kingPos = board.getKing(colorInCheck).getPosition();
     return isSquareAttacked(kingPos, colorInCheck, board);
 }
 
-bool Chess::Game::isCheckmate(const PieceColor &colorInCheckmate, const std::optional<Board> &board) const
+bool Chess::Game::isCheckmate(const PieceColor &colorInCheckmate, const Board& board) const
 {
     return false;
 }
