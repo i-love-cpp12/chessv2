@@ -21,7 +21,16 @@ Chess::Renderer::Renderer(const std::string& texturePath, const std::string& JSO
 {
     InitWindow(800, 800, "chess2");
     SetTargetFPS(30);
+
     textureManager = TextureManager(texturePath, JSONCoordsPath);
+    Rectangle chessboardSprite = textureManager.getSprite("window_icon");
+
+    Image icon = ImageFromImage(
+        LoadImageFromTexture(textureManager.getTexture()),
+        chessboardSprite
+    );
+    
+    SetWindowIcon(icon);
 }
 
 void Chess::Renderer::renderGame(const Chess::Game &game) const
@@ -31,6 +40,7 @@ void Chess::Renderer::renderGame(const Chess::Game &game) const
     renderSelectedSquare(selectedPieceSquare);
     renderPieces(game.getBoard());
     renderSuggestedMoves(selectedPieceSquare ? game.getPossibleMovesFor(selectedPieceSquare.value()) : std::vector<Chess::ChessMove>{});
+    renderGameStatus(game.getGameStatus());
 }
 
 void Chess::Renderer::renderBoard() const
@@ -77,6 +87,46 @@ void Chess::Renderer::renderSuggestedMoves(const std::vector<Chess::ChessMove>& 
         else
             DrawRing(center, 0.0f , fullRadius * 0.3, 0.0f, 360.0f, 35, color);
     }
+}
+
+void Chess::Renderer::renderGameStatus(const GameStatusForWhite& status) const
+{
+    if(status == GameStatusForWhite::RUNNING)
+        return;
+    std::string msg;
+    switch(status)
+    {
+        case GameStatusForWhite::WIN :
+            msg = "White won!!!";
+        break;
+
+        case GameStatusForWhite::LOST :
+            msg = "Black won!!!";
+        break;
+
+        case GameStatusForWhite::DRAW :
+            msg = "Draw!!!";
+        break;
+    }
+
+    const float popupWidth = boardRect.width / 2.0f; 
+    const float popupHeight = boardRect.height / 3.0f;
+
+    DrawRectangleRounded(
+        {
+            boardRect.width / 2 - popupWidth / 2,
+            boardRect.height / 2 - popupHeight / 2,
+            popupWidth,
+            popupHeight
+        },
+        0.1f,
+        20,
+        WHITE
+    );
+    const int textHeight = 50;
+    const int textWidth = MeasureText(msg.c_str(), textHeight);
+
+    DrawText(msg.c_str(), boardRect.width / 2 - textWidth / 2, boardRect.height / 2 - textHeight / 2, textHeight, BLACK);
 }
 
 Rectangle Chess::Renderer::getPieceSprite(const PieceColor& color, const PieceType& type) const

@@ -11,6 +11,17 @@
     },
 
     {
+        "name": "window_icon",
+        "rect":
+        {
+            "x": 5,
+            "y": 9,
+            "width": 1,
+            "height": 1
+        }
+    },
+
+    {
         "name": "white_king",
         "rect":
         {

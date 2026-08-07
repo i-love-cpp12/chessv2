@@ -12,7 +12,7 @@ Chess::Game::Game()/*: posibleMoves({
 
 void Chess::Game::onSquereSelected(int8_t x, int8_t y)
 {
-    if(!board.inBoardBounds(x, y))
+    if(!board.inBoardBounds(x, y) || getGameStatus() != GameStatusForWhite::RUNNING)
         return;
     
     const Piece* const targetPiece = board.getPiece(x, y);
@@ -86,9 +86,30 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const ChessboardP
     return getPossibleMovesFor(board.getPiece(position.getX(), position.getY()));
 }
 
+Chess::GameStatusForWhite Chess::Game::getGameStatus() const
+{
+    bool hasPosibleMoves = false;
+    bool _isCheck = isCheck(turn, board);
+
+    board.foreachSquare([&](const Piece* piece) -> bool {
+        if(piece && piece->color == turn && !getPossibleMovesFor(piece).empty())
+        {
+            hasPosibleMoves = true;
+            return true;
+        }
+        return false;
+    });
+
+    if(hasPosibleMoves)
+        return GameStatusForWhite::RUNNING;
+    if(!_isCheck)
+        return GameStatusForWhite::DRAW;
+
+    return turn == PieceColor::CHESS_WHITE ? GameStatusForWhite::LOST : GameStatusForWhite::WIN;
+}
+
 bool Chess::Game::isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const Board& board) const
 {
-    //no deep copy on board in piece class use ptr and setboard or smth
     for(int8_t y = 0; y < board.HEIGHT; ++y)
     {
         for(int8_t x = 0; x < board.WIDTH; ++x)
@@ -103,6 +124,7 @@ bool Chess::Game::isSquareAttacked(const ChessboardPosition& square, const Piece
             }
         }
     }
+
     return false;
 }
 
@@ -110,11 +132,6 @@ bool Chess::Game::isCheck(const PieceColor &colorInCheck, const Board& board) co
 {
     ChessboardPosition kingPos = board.getKing(colorInCheck).getPosition();
     return isSquareAttacked(kingPos, colorInCheck, board);
-}
-
-bool Chess::Game::isCheckmate(const PieceColor &colorInCheckmate, const Board& board) const
-{
-    return false;
 }
 
 bool Chess::Game::isEnPassantPosition(const UniversalVector<int8_t>& position) const

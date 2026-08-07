@@ -8,6 +8,7 @@
 #include"Pieces/Piece.hpp"
 #include"ChessboardPosition.hpp"
 #include"UniversalVector.hpp"
+#include<functional>
 
 namespace Chess
 {
@@ -18,6 +19,8 @@ namespace Chess
             Board(const Board& other);
             static bool inBoardBounds(int8_t x, int8_t y);
             static bool inBoardBounds(const UniversalVector<int8_t>& pos);
+
+            void foreachSquare(std::function<bool(const Piece*)> callback) const;
 
             const Piece* getPiece(int8_t x, int8_t y) const;
             const Piece* getPiece(const UniversalVector<int8_t>& pos) const;

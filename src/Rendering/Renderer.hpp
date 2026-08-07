@@ -32,6 +32,7 @@ namespace Chess
             void renderPiece(const Piece* const piece) const;
             void renderSelectedSquare(const std::optional<ChessboardPosition>& selectedSquare) const;
             void renderSuggestedMoves(const std::vector<Chess::ChessMove>& posibleMoves) const;
+            void renderGameStatus(const GameStatusForWhite& status) const;
             Rectangle getPieceSprite(const PieceColor& color, const PieceType& type) const;
             Rectangle chessPositionToDisplayPos(const Chess::ChessboardPosition& position) const;
         private:

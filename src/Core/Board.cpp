@@ -86,7 +86,7 @@ std::unique_ptr<Chess::Piece> Chess::Board::pieceFactory(char type, const Chessb
             return std::make_unique<Chess::Knight>(color, this, position);
 
         case 'P':
-            return std::make_unique<Pawn>(color, this, position);
+            return std::make_unique<Chess::Pawn>(color, this, position);
 
         case ' ':
             return nullptr;
@@ -104,6 +104,18 @@ bool Chess::Board::inBoardBounds(int8_t x, int8_t y)
 bool Chess::Board::inBoardBounds(const UniversalVector<int8_t>& pos)
 {
     return inBoardBounds(pos.x, pos.y);
+}
+
+void Chess::Board::foreachSquare(std::function<bool(const Piece *)> callback) const
+{
+    for(int8_t y = 0; y < HEIGHT; ++y)
+    {
+        for(int8_t x = 0; x < WIDTH; ++x)
+        {
+            if(callback(getPiece(x, y)))
+                return;
+        }
+    }
 }
 
 const Chess::Piece* Chess::Board::getPiece(int8_t x, int8_t y) const

@@ -29,10 +29,10 @@
                 "-lwinmm",
                 "-g",
                 "-o",
-                "${workspaceFolder}/chess2.exe"
+                "${workspaceFolder}/src/chess2.exe"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [
                 "$gcc"

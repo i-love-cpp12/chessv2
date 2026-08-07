@@ -26,7 +26,7 @@ namespace Chess
                 UniversalVector<int8_t>{1, 0},
                 UniversalVector<int8_t>{-1, 1},
                 UniversalVector<int8_t>{0, 1},
-                UniversalVector<int8_t>{-1, 1}
+                UniversalVector<int8_t>{1, 1}
             };
             bool _hasMoved;
     };
