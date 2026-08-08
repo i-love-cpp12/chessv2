@@ -4,7 +4,7 @@
 #include"../ChessMove.hpp"
 
 Chess::King::King(const PieceColor color, const Board* board, const ChessboardPosition &position):
-    Piece::Piece(color, PieceType::KING, board, position)
+    Piece::Piece(color, PieceType::KING, board, position), _hasMoved(false)
 {
 }
 

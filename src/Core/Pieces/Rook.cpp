@@ -4,7 +4,7 @@
 #include"../ChessMove.hpp"
 
 Chess::Rook::Rook(const PieceColor color, const Board* board, const ChessboardPosition &position):
-    Piece::Piece(color, PieceType::ROOK, board, position)
+    Piece::Piece(color, PieceType::ROOK, board, position), _hasMoved(false)
 {
 }
 

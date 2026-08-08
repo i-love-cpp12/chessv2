@@ -4,7 +4,7 @@
 #include"../ChessMove.hpp"
 
 Chess::Pawn::Pawn(const PieceColor color, const Board* board, const ChessboardPosition &position):
-    Piece::Piece(color, PieceType::PAWN, board, position)
+    Piece::Piece(color, PieceType::PAWN, board, position), _hasMoved(false)
 {
 }
 

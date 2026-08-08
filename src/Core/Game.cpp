@@ -43,10 +43,31 @@ void Chess::Game::makeMove(const ChessMove &move)
 {
     board.movePiece(move.source, move.destination);
 
+    //set en passant position
     enPassantPosition = move.moveType & ChessMoveType::DOUBLE_FORWARD ? std::optional<ChessboardPosition>(move.destination) : std::nullopt;
 
     if(move.moveType & ChessMoveType::EN_PASSANT)
         board.removePiece(move.destination.getX(), move.source.getY());
+
+    if(move.moveType & ChessMoveType::SHORT_CASTLE || move.moveType & ChessMoveType::LONG_CASTLE)
+    {
+        UniversalVector<int8_t> rookPos;
+        UniversalVector<int8_t> rookDestination;
+        const int8_t y = move.source.getY();
+
+        if(move.moveType & ChessMoveType::SHORT_CASTLE)
+        {
+            rookPos = UniversalVector<int8_t>(board.WIDTH - 1, y);
+            rookDestination = UniversalVector<int8_t>(move.destination.getX() - 1, y);
+        }
+        else
+        {
+            rookPos = UniversalVector<int8_t>(0, y);
+            rookDestination = UniversalVector<int8_t>(move.destination.getX() + 1, y);
+        }
+
+        board.movePiece(ChessboardPosition(rookPos), ChessboardPosition(rookDestination));
+    }
 
     turn = turn == PieceColor::CHESS_WHITE ? PieceColor::CHESS_BLACK : PieceColor::CHESS_WHITE;
 
@@ -78,6 +99,8 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const Piece *piec
         }
     }
 
+    addPossibleMovesCastle(piece, possibleMoves);
+
     return possibleMoves;
 }
 
@@ -89,7 +112,6 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const ChessboardP
 Chess::GameStatusForWhite Chess::Game::getGameStatus() const
 {
     bool hasPosibleMoves = false;
-    bool _isCheck = isCheck(turn, board);
 
     board.foreachSquare([&](const Piece* piece) -> bool {
         if(piece && piece->color == turn && !getPossibleMovesFor(piece).empty())
@@ -102,7 +124,7 @@ Chess::GameStatusForWhite Chess::Game::getGameStatus() const
 
     if(hasPosibleMoves)
         return GameStatusForWhite::RUNNING;
-    if(!_isCheck)
+    if(!isCheck(turn, board))
         return GameStatusForWhite::DRAW;
 
     return turn == PieceColor::CHESS_WHITE ? GameStatusForWhite::LOST : GameStatusForWhite::WIN;
@@ -139,10 +161,10 @@ bool Chess::Game::isEnPassantPosition(const UniversalVector<int8_t>& position) c
     return enPassantPosition && enPassantPosition->getX() == position.x && enPassantPosition->getY() == position.y;
 }
 
-std::vector<Chess::ChessMove> Chess::Game::addPossibleMovesEnPassant(const Piece *piece, std::vector<ChessMove>& possibleMoves) const
+void Chess::Game::addPossibleMovesEnPassant(const Piece *piece, std::vector<ChessMove>& possibleMoves) const
 {
     if(!piece->type == PieceType::PAWN)
-        return {};
+        return;
 
     const int8_t dir = piece->color == PieceColor::CHESS_WHITE ? -1 : 1;
 
@@ -156,5 +178,48 @@ std::vector<Chess::ChessMove> Chess::Game::addPossibleMovesEnPassant(const Piece
     if(isEnPassantPosition(right))
         possibleMoves.emplace_back(piece->getPosition(), ChessboardPosition(right.x, right.y + dir), ChessMoveType::CAPTURE | ChessMoveType::EN_PASSANT, PieceType::PAWN);
 
-    return possibleMoves;
+}
+
+void Chess::Game::addPossibleMovesCastle(const Piece *piece, std::vector<ChessMove> &possibleMoves) const
+{
+    if(piece->type != PieceType::KING || piece->hasMoved() || isCheck(piece->color, board))
+        return;
+    addPossibleMovesCastleShort(piece, possibleMoves);
+    addPossibleMovesCastleLong(piece, possibleMoves);
+}
+
+void Chess::Game::addPossibleMovesCastleShort(const Piece *king, std::vector<ChessMove> &possibleMoves) const
+{
+    const int8_t y = king->getPosition().getY();
+    
+    for(int8_t x = king->getPosition().getX() + 1; x < board.WIDTH - 1; ++x)
+    {
+        if(board.getPiece(x, y) || isSquareAttacked({x, y}, king->color, board))
+            return;
+    }
+
+    const Piece* const rook = board.getPiece(board.WIDTH - 1, y);
+
+    if(!rook || rook->type != PieceType::ROOK || rook->hasMoved())
+        return;
+
+    possibleMoves.emplace_back(king->getPosition(), ChessboardPosition(king->getPosition().getX() + 2, y), ChessMoveType::SHORT_CASTLE);
+}
+
+void Chess::Game::addPossibleMovesCastleLong(const Piece *king, std::vector<ChessMove> &possibleMoves) const
+{
+    const int8_t y = king->getPosition().getY();
+    
+    for(int8_t x = king->getPosition().getX() - 1; x > 0; --x)
+    {
+        if(board.getPiece(x, y) || isSquareAttacked({x, y}, king->color, board))
+            return;
+    }
+
+    const Piece* const rook = board.getPiece(0, y);
+
+    if(!rook || rook->type != PieceType::ROOK || rook->hasMoved())
+        return;
+
+    possibleMoves.emplace_back(king->getPosition(), ChessboardPosition(king->getPosition().getX() - 2, y), ChessMoveType::LONG_CASTLE);
 }

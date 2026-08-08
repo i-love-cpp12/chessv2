@@ -36,7 +36,11 @@ namespace Chess
             bool isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const Board& board) const;
             bool isCheck(const PieceColor& colorInCheck, const Board& board) const;
             bool isEnPassantPosition(const UniversalVector<int8_t>& position) const;
-            std::vector<ChessMove> addPossibleMovesEnPassant(const Piece* piece, std::vector<ChessMove>& possibleMoves) const;
+            void addPossibleMovesEnPassant(const Piece* piece, std::vector<ChessMove>& possibleMoves) const;
+            void addPossibleMovesCastle(const Piece* piece, std::vector<ChessMove>& possibleMoves) const;
+            
+            void addPossibleMovesCastleShort(const Piece* king, std::vector<ChessMove>& possibleMoves) const;
+            void addPossibleMovesCastleLong(const Piece* king, std::vector<ChessMove>& possibleMoves) const;
         public:
 
         private:
