@@ -62,33 +62,55 @@ void Chess::Board::generateBoard(const std::string &boardSetupFilePath)
     }
 }
 
-std::unique_ptr<Chess::Piece> Chess::Board::pieceFactory(char type, const ChessboardPosition& position) const
+constexpr Chess::PieceType Chess::Board::charToPieceType(char type)
 {
-    const PieceColor color = std::isupper(type) ? PieceColor::CHESS_WHITE : PieceColor::CHESS_BLACK;
-
     type = std::toupper(type);
 
     switch(type)
     {
-        case 'K':
+        case 'K': return PieceType::KING;
+        case 'Q': return PieceType::QUEEN;
+        case 'R': return PieceType::ROOK;
+        case 'B': return PieceType::BISHOP;
+        case 'N': return PieceType::KNIGHT;
+        case 'P': return PieceType::PAWN;
+        case ' ': return PieceType::EMPTY;
+        default: throw std::runtime_error("Invalid piece character");
+    }
+}
+
+std::unique_ptr<Chess::Piece> Chess::Board::pieceFactory(char charType, const ChessboardPosition& position) const
+{
+    const PieceColor color = std::isupper(charType) ? PieceColor::CHESS_WHITE : PieceColor::CHESS_BLACK;
+
+    const PieceType type = charToPieceType(charType);
+
+    return pieceFactory(type, color, position);
+}
+
+std::unique_ptr<Chess::Piece> Chess::Board::pieceFactory(PieceType type, PieceColor color, const ChessboardPosition &position) const
+{
+    switch(type)
+    {
+        case PieceType::KING:
             return std::make_unique<Chess::King>(color, this, position);
 
-        case 'Q':
+        case PieceType::QUEEN:
             return std::make_unique<Chess::Queen>(color, this, position);
 
-        case 'R':
+        case PieceType::ROOK:
             return std::make_unique<Chess::Rook>(color, this, position);
 
-        case 'B':
+        case PieceType::BISHOP:
             return std::make_unique<Chess::Bishop>(color, this, position);
 
-        case 'N':
+        case PieceType::KNIGHT:
             return std::make_unique<Chess::Knight>(color, this, position);
 
-        case 'P':
+        case PieceType::PAWN:
             return std::make_unique<Chess::Pawn>(color, this, position);
 
-        case ' ':
+        case PieceType::EMPTY:
             return nullptr;
 
         default:
@@ -141,7 +163,7 @@ const Chess::Piece& Chess::Board::getKing(const PieceColor color) const
     return *(color == PieceColor::CHESS_WHITE ? whiteKing : blackKing);
 }
 
-const void Chess::Board::removePiece(int8_t x, int8_t y)
+void Chess::Board::removePiece(int8_t x, int8_t y)
 {
     if(!inBoardBounds(x, y))
         throw std::runtime_error("Position out of bound");
@@ -149,12 +171,30 @@ const void Chess::Board::removePiece(int8_t x, int8_t y)
     data[y * WIDTH + x].reset();
 }
 
-const void Chess::Board::removePiece(const UniversalVector<int8_t> &pos)
+void Chess::Board::removePiece(const UniversalVector<int8_t> &pos)
 {
     removePiece(pos.x, pos.y);
 }
 
-void Chess::Board::movePiece(const ChessboardPosition& from, const ChessboardPosition& to)
+void Chess::Board::setPiece(int8_t x, int8_t y, PieceType type, PieceColor color)
+{
+    if(!inBoardBounds(x, y))
+        throw std::runtime_error("Position out of bound");
+
+    data[y * WIDTH + x] = std::move(pieceFactory(type, color, ChessboardPosition(x, y)));
+}
+
+void Chess::Board::setPiece(ChessboardPosition position, PieceType type, PieceColor color)
+{
+    setPiece(position.getX(), position.getY(), type, color);
+}
+
+void Chess::Board::setPiece(const UniversalVector<int8_t>& position, PieceType type, PieceColor color)
+{
+    setPiece(position.x, position.y, type, color);
+}
+
+void Chess::Board::movePiece(const ChessboardPosition &from, const ChessboardPosition &to)
 {
     std::unique_ptr<Chess::Piece>& source = data[from.getY() * WIDTH + from.getX()];
     std::unique_ptr<Chess::Piece>& dest = data[to.getY() * WIDTH + to.getX()];

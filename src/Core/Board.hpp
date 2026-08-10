@@ -9,6 +9,7 @@
 #include"ChessboardPosition.hpp"
 #include"UniversalVector.hpp"
 #include<functional>
+#include<map>
 
 namespace Chess
 {
@@ -28,13 +29,19 @@ namespace Chess
 
             const Piece& getKing(const PieceColor color) const;
 
-            const void removePiece(int8_t x, int8_t y);
-            const void removePiece(const UniversalVector<int8_t>& pos);
+            void removePiece(int8_t x, int8_t y);
+            void removePiece(const UniversalVector<int8_t>& pos);
+
+            void setPiece(int8_t x, int8_t y, PieceType type, PieceColor color);
+            void setPiece(ChessboardPosition position, PieceType type, PieceColor color);
+            void setPiece(const UniversalVector<int8_t>& position, PieceType type, PieceColor color);
 
             void movePiece(const ChessboardPosition& from, const ChessboardPosition& to);
         private:
             void generateBoard(const std::string& boardSetupFilePath);
-            std::unique_ptr<Piece> pieceFactory(char type, const ChessboardPosition& position) const;
+            static constexpr PieceType charToPieceType(char type);
+            std::unique_ptr<Piece> pieceFactory(PieceType type, PieceColor color, const ChessboardPosition &position) const;
+            std::unique_ptr<Piece> pieceFactory(char charType, const ChessboardPosition& position) const;
         public:
             static constexpr int8_t WIDTH = 8;
             static constexpr int8_t HEIGHT = 8;

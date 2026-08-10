@@ -69,6 +69,11 @@ void Chess::Game::makeMove(const ChessMove &move)
         board.movePiece(ChessboardPosition(rookPos), ChessboardPosition(rookDestination));
     }
 
+    if(move.moveType & ChessMoveType::PROMOTION)
+    {
+        board.setPiece(move.destination, PieceType::QUEEN, turn);
+    }
+
     turn = turn == PieceColor::CHESS_WHITE ? PieceColor::CHESS_BLACK : PieceColor::CHESS_WHITE;
 
     selectedPieceSquere.reset();

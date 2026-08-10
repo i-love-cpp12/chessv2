@@ -24,7 +24,8 @@ namespace Chess
         ROOK,
         BISHOP,
         KNIGHT,
-        PAWN
+        PAWN,
+        EMPTY
     };
 
     class Piece
