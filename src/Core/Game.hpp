@@ -1,6 +1,7 @@
 #pragma once
 
 #include<vector>
+#include<unordered_map>
 #include"Board.hpp"
 #include"Pieces/Piece.hpp"
 #include"ChessMove.hpp"
@@ -36,6 +37,7 @@ namespace Chess
             bool isSquareAttacked(const ChessboardPosition& square, const PieceColor& colorUnderAttack, const Board& board) const;
             bool isCheck(const PieceColor& colorInCheck, const Board& board) const;
             bool isEnPassantPosition(const UniversalVector<int8_t>& position) const;
+
             void addPossibleMovesEnPassant(const Piece* piece, std::vector<ChessMove>& possibleMoves) const;
             void addPossibleMovesCastle(const Piece* piece, std::vector<ChessMove>& possibleMoves) const;
             
@@ -45,7 +47,8 @@ namespace Chess
 
         private:
             Board board;
-            // std::vector<ChessMove> posibleMoves;
+            // posible moves per piece, key: [y * Board::WIDTH + x]
+            mutable std::unordered_map<size_t, std::vector<ChessMove>> posibleMovesCache;
             std::optional<ChessboardPosition> enPassantPosition;
             std::optional<ChessboardPosition> selectedPieceSquere;
             PieceColor turn;
