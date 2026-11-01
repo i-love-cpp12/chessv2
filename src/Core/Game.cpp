@@ -38,7 +38,10 @@ void Chess::Game::onSquereSelected(int8_t x, int8_t y)
 void Chess::Game::makeMove(const ChessMove &move)
 {
     board.movePiece(move.source, move.destination);
-    posibleMovesCache.clear();
+
+    //clear cache
+    for(auto& item : posibleMovesCache)
+        item = std::nullopt;
 
     //set en passant position
     enPassantPosition = move.moveType & ChessMoveType::DOUBLE_FORWARD ? std::optional<ChessboardPosition>(move.destination) : std::nullopt;
@@ -80,11 +83,10 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const Piece *piec
 {
     if(!piece)
         return {};
-    const size_t cacheKey = piece->getPosition().getY() * Board::WIDTH + piece->getPosition().getX();
-    auto it = posibleMovesCache.find(cacheKey);
+    const size_t piecePositionCacheIndex = piece->getPosition().getY() * Board::WIDTH + piece->getPosition().getX();
 
-    if(it != posibleMovesCache.end())
-        return it->second;
+    if(posibleMovesCache[piecePositionCacheIndex])
+        return *(posibleMovesCache[piecePositionCacheIndex]);
 
     std::vector<Chess::ChessMove> possibleMoves = piece->getPseudoPossibleMoves();
 
@@ -108,7 +110,7 @@ std::vector<Chess::ChessMove> Chess::Game::getPossibleMovesFor(const Piece *piec
 
     addPossibleMovesCastle(piece, possibleMoves);
 
-    posibleMovesCache[cacheKey] = possibleMoves;
+    posibleMovesCache[piecePositionCacheIndex] = possibleMoves;
     return possibleMoves;
 }
 

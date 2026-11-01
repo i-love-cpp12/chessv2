@@ -1,7 +1,7 @@
 #pragma once
 
 #include<vector>
-#include<unordered_map>
+#include<optional>
 #include"Board.hpp"
 #include"Pieces/Piece.hpp"
 #include"ChessMove.hpp"
@@ -48,7 +48,7 @@ namespace Chess
         private:
             Board board;
             // posible moves per piece, key: [y * Board::WIDTH + x]
-            mutable std::unordered_map<size_t, std::vector<ChessMove>> posibleMovesCache;
+            mutable std::array<std::optional<std::vector<ChessMove>>, Board::WIDTH * Board::HEIGHT> posibleMovesCache;
             std::optional<ChessboardPosition> enPassantPosition;
             std::optional<ChessboardPosition> selectedPieceSquere;
             PieceColor turn;
