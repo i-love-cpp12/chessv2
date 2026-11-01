@@ -34,11 +34,12 @@ namespace Chess
             void renderSuggestedMoves(const std::vector<Chess::ChessMove>& posibleMoves) const;
             void renderGameStatus(const GameStatusForWhite& status) const;
             Rectangle getPieceSprite(const PieceColor& color, const PieceType& type) const;
-            Rectangle chessPositionToDisplayPos(const Chess::ChessboardPosition& position) const;
+            Rectangle chessPositionToDisplayRect(const Chess::ChessboardPosition& position) const;
         private:
             Chess::TextureManager textureManager;
             static const std::map<SpritePieceKey, std::string> pieceTypeToSpriteKey;
-            const Rectangle boardRect;
-            const unsigned int CELL_SIZE;
+            // const Rectangle boardRect;
+            // const uint16_t CELL_WIDTH;
+            // const uint16_t CELL_HEIGHT;
     };
 }

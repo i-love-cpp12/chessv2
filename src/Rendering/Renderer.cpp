@@ -1,5 +1,7 @@
 #include "Renderer.hpp"
 #include "../Core/ChessboardPosition.hpp"
+#include "../../config/config.hpp"
+
 const std::map<Chess::SpritePieceKey, std::string> Chess::Renderer::pieceTypeToSpriteKey = 
 {
     {{PieceColor::CHESS_WHITE, PieceType::KING},   "white_king"},
@@ -17,7 +19,7 @@ const std::map<Chess::SpritePieceKey, std::string> Chess::Renderer::pieceTypeToS
     {{PieceColor::CHESS_BLACK, PieceType::PAWN},   "black_pawn"}
 };
 
-Chess::Renderer::Renderer(const std::string& texturePath, const std::string& JSONCoordsPath): boardRect({0, 0, 800, 800}), CELL_SIZE(boardRect.width / 8)
+Chess::Renderer::Renderer(const std::string& texturePath, const std::string& JSONCoordsPath)
 {
     InitWindow(800, 800, "chess2");
     SetTargetFPS(30);
@@ -45,6 +47,8 @@ void Chess::Renderer::renderGame(const Chess::Game &game) const
 
 void Chess::Renderer::renderBoard() const
 {
+    const Rectangle boardRect = {(float)Config::boardOnScreenX, (float)Config::boardOnScreenY, (float)Config::boardWidthOnScreen, (float)Config::boardHeightOnScreen};
+
     DrawTexturePro(textureManager.getTexture(), textureManager.getSprite("board"), boardRect, {0, 0}, 0.0f, WHITE);
 }
 
@@ -64,22 +68,26 @@ void Chess::Renderer::renderPiece(const Piece *const piece) const
     if(!piece)
         return;
     Rectangle sprite = getPieceSprite(piece->color, piece->type);
-    Rectangle dest = chessPositionToDisplayPos(piece->getPosition());
+    Rectangle dest = chessPositionToDisplayRect(piece->getPosition());
     DrawTexturePro(textureManager.getTexture(), sprite, dest, {0, 0}, 0.0f, WHITE);
 }
 
 void Chess::Renderer::renderSelectedSquare(const std::optional<ChessboardPosition> &selectedPieceSquare) const
 {
     if(selectedPieceSquare)
-        DrawRectangleRec(chessPositionToDisplayPos(selectedPieceSquare.value()), Color{118, 161, 18, 150});
+        DrawRectangleRec(chessPositionToDisplayRect(selectedPieceSquare.value()), Color{118, 161, 18, 150});
 }
 
 void Chess::Renderer::renderSuggestedMoves(const std::vector<Chess::ChessMove>& posibleMoves) const
 {
+    const float CELL_HEIGHT = Config::boardHeightOnScreen / (float)Board::HEIGHT;
+    const float CELL_WIDTH = Config::boardHeightOnScreen / (float)Board::WIDTH;
+
     for(const auto& move : posibleMoves)
     {
-        Vector2 center = {move.destination.getX() * (float)CELL_SIZE + CELL_SIZE / 2.0f, move.destination.getY() * (float)CELL_SIZE + CELL_SIZE / 2.0f};
-        const int fullRadius = CELL_SIZE / 2;
+        Vector2 center = {move.destination.getX() * (float)CELL_WIDTH + CELL_WIDTH / 2.0f + Config::boardOnScreenX, move.destination.getY() * (float)CELL_HEIGHT + CELL_HEIGHT / 2.0f + Config::boardOnScreenY};
+
+        const int fullRadius = CELL_HEIGHT / 2;
         Color color = {75, 75, 75, 130};
 
         if(move.moveType & Chess::ChessMoveType::CAPTURE)
@@ -109,6 +117,8 @@ void Chess::Renderer::renderGameStatus(const GameStatusForWhite& status) const
         break;
     }
 
+    const Rectangle boardRect = {(float)Config::boardOnScreenX, (float)Config::boardOnScreenY, (float)Config::boardWidthOnScreen, (float)Config::boardHeightOnScreen};
+
     const float popupWidth = boardRect.width / 2.0f; 
     const float popupHeight = boardRect.height / 3.0f;
 
@@ -134,12 +144,15 @@ Rectangle Chess::Renderer::getPieceSprite(const PieceColor& color, const PieceTy
     return textureManager.getSprite(pieceTypeToSpriteKey.at({color, type}));
 }
 
-Rectangle Chess::Renderer::chessPositionToDisplayPos(const Chess::ChessboardPosition &position) const
+Rectangle Chess::Renderer::chessPositionToDisplayRect(const Chess::ChessboardPosition &position) const
 {
+    const float CELL_HEIGHT = Config::boardHeightOnScreen / (float)Board::HEIGHT;
+    const float CELL_WIDTH = Config::boardHeightOnScreen / (float)Board::WIDTH;
+
     return {
-        position.getX() * (float)CELL_SIZE,
-        position.getY() * (float)CELL_SIZE,
-        (float)CELL_SIZE,
-        (float)CELL_SIZE
+        position.getX() * CELL_WIDTH + Config::boardOnScreenX,
+        position.getY() * CELL_HEIGHT + Config::boardOnScreenY,
+        CELL_WIDTH,
+        CELL_HEIGHT
     };
 }

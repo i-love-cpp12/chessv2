@@ -19,6 +19,7 @@
                 "${workspaceFolder}/src/Core/Pieces/Knight.cpp",
                 "${workspaceFolder}/src/Rendering/Renderer.cpp",
                 "${workspaceFolder}/src/Rendering/TextureManager.cpp",
+                "${workspaceFolder}/src/Input/InputHandler.cpp",
                 "-std=c++20",
                 "-fdiagnostics-color=always",
                 "-IC:/raylib/include",
